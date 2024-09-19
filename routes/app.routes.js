@@ -2,37 +2,22 @@ module.exports = app => {
 
     const router = require('express').Router()
 
+    const appHandler = require('../handler/app.handler')
+
     //Endpoint para criar tarefda
-    app.post('/task', (request, response) => {
-            const data = request.body
-            return response.json(data)
-        })
+    router.post('/task', appHandler.createTask)
 
     //Endpont para listar tarefas
-    app.get('/tasks', (request, response) => {
-            return response.json({ message: 'lista todoas as tarefas' })
-        })
+    router.get('/tasks', appHandler.listAllTasks)
 
     //Endpoint para listar detalhes de uma tarefa
-    app.get('/task/:id', (request, response) => {
-            const id = request.params.id
-
-            return response.json({ message: `Retornando dados da tarefa ${id}` })
-        })
+    router.get('/task/:id', appHandler.taskDetails)
 
     //Endpoint para atualizar status de uma tarefa
-    app.put('/task/:id', (request, response) => {
-            const id = request.params.id;
-
-            return response.json({ message: `Atualizando dados da tarefa ${id}` })
-        })
+    router.put('/task/:id', appHandler.updateTaskStatus)
 
     //Endpoint para excluir uma tarefa
-    app.delete('/task/:id', (request, response) => {
-            const id = request.params.id;
-
-            return response.json({ message: `Excluindo tarefa ${id}` })
-        })
+    router.delete('/task/:id', appHandler.deleteTask)
 
     app.use('/api', router)
 }
