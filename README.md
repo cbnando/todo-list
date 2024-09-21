@@ -14,6 +14,7 @@ npx sequelize-cli init
 
 # Criando uma model
 npx sequelize-cli model:generate --name Task --attributes taskName:string,description:string,owner:string,status:string
+npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string,password:string
 
 # Criando o banco de dados
 npx sequelize-cli db:migrate

@@ -3,6 +3,7 @@ module.exports = app => {
     const router = require('express').Router()
 
     const appHandler = require('../handler/app.handler')
+    const userHandler = require('../handler/user.handler')
 
     //Endpoint para criar tarefda
     router.post('/task', appHandler.createTask)
@@ -18,6 +19,12 @@ module.exports = app => {
 
     //Endpoint para excluir uma tarefa
     router.delete('/task/:id', appHandler.deleteTask)
+
+
+    //Rotas de usuário
+    router.post('/signup', userHandler.signUp)
+
+    router.post('/signin', userHandler.signIn)
 
     app.use('/api', router)
 }
