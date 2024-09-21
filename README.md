@@ -18,3 +18,12 @@ npx sequelize-cli model:generate --name User --attributes firstName:string,lastN
 
 # Criando o banco de dados
 npx sequelize-cli db:migrate
+
+# Criptografar senha
+npm i bcryptjs
+
+# Token
+npm i jsonwebtoken
+
+# Cadastrar variaveis de ambiente
+npm i dotenv

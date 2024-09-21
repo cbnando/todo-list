@@ -2,6 +2,8 @@ module.exports = app => {
 
     const router = require('express').Router()
 
+    const Auth = require('../middleware/authVerify')
+
     const appHandler = require('../handler/app.handler')
     const userHandler = require('../handler/user.handler')
 
@@ -9,7 +11,7 @@ module.exports = app => {
     router.post('/task', appHandler.createTask)
 
     //Endpont para listar tarefas
-    router.get('/tasks', appHandler.listAllTasks)
+    router.get('/tasks',Auth, appHandler.listAllTasks)
 
     //Endpoint para listar detalhes de uma tarefa
     router.get('/task/:id', appHandler.taskDetails)

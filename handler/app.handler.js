@@ -1,4 +1,5 @@
 const { Task } = require('../models/index')
+const jwt = require('jsonwebtoken')
 
 exports.createTask = async (request, response) => {
 
@@ -35,9 +36,19 @@ exports.createTask = async (request, response) => {
 
 exports.listAllTasks = async (request, response) => {
 
-    const tasksList = await Task.findAll()
+    try {
 
-    return response.json(tasksList)
+        const tasksList = await Task.findAll()
+
+        return response.json(tasksList)
+
+    } catch (error) {
+
+        return response.status(500).send({
+            error: 'error',
+            message: error.message
+        })
+    }
 }
 
 exports.taskDetails = async (request, response) => {

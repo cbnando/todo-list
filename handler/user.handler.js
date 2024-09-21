@@ -1,5 +1,7 @@
 const e = require('express');
 const { User } = require('../models/index')
+const jwt = require('jsonwebtoken');
+
 const bcrypt = require('bcryptjs')
 
 const salt = bcrypt.genSaltSync(10);
@@ -63,7 +65,22 @@ exports.signIn = async (request, response) => {
 
         //gerar um token de autenticação
 
-        return response.json({message: 'Login bem sucedido!'})
+        const payload = {
+            user: {
+                email: account.email,
+                username: account.firstName
+            }
+        }
+
+        const token = jwt.sign(
+            payload,
+            process.env.SECRET
+        );
+
+        return response.json({
+            auth: true,
+            token: token
+        })
 
     } catch (error) {
         return response.status(500).send({
