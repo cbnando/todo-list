@@ -1,9 +1,6 @@
-const e = require('express');
 const { User } = require('../models/index')
 const jwt = require('jsonwebtoken');
-
 const bcrypt = require('bcryptjs')
-
 const salt = bcrypt.genSaltSync(10);
 
 exports.signUp = async (request, response) => {
@@ -67,6 +64,7 @@ exports.signIn = async (request, response) => {
 
         const payload = {
             user: {
+                owner: account.id,
                 email: account.email,
                 username: account.firstName
             }

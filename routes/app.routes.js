@@ -1,3 +1,5 @@
+const authVerify = require('../middleware/authVerify')
+
 module.exports = app => {
 
     const router = require('express').Router()
@@ -8,19 +10,19 @@ module.exports = app => {
     const userHandler = require('../handler/user.handler')
 
     //Endpoint para criar tarefda
-    router.post('/task', appHandler.createTask)
+    router.post('/task', Auth, appHandler.createTask)
 
     //Endpont para listar tarefas
-    router.get('/tasks',Auth, appHandler.listAllTasks)
+    router.get('/tasks', Auth, appHandler.listAllTasks)
 
     //Endpoint para listar detalhes de uma tarefa
-    router.get('/task/:id', appHandler.taskDetails)
+    router.get('/task/:id', Auth, appHandler.taskDetails)
 
     //Endpoint para atualizar status de uma tarefa
-    router.put('/task/:id', appHandler.updateTaskStatus)
+    router.put('/task/:id', Auth, appHandler.updateTaskStatus)
 
     //Endpoint para excluir uma tarefa
-    router.delete('/task/:id', appHandler.deleteTask)
+    router.delete('/task/:id', Auth, appHandler.deleteTask)
 
 
     //Rotas de usuário

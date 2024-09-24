@@ -4,16 +4,16 @@ const jwt = require('jsonwebtoken')
 exports.createTask = async (request, response) => {
 
     try {
-        const { taskName, description, owner } = request.body
+        const { taskName, description } = request.body
 
-        if (!taskName || !owner) {
+        if (!taskName) {
             return response.json({ message: 'Você precisa informar o nome da tarefa ou nome do usuário a quem ela pertence!' })
         }
 
         const data = {
             taskName: taskName,
             description: description,
-            owner: owner,
+            owner: request.user.owner,
             status: 'todo'
         }
 
@@ -34,11 +34,15 @@ exports.createTask = async (request, response) => {
     }
 }
 
-exports.listAllTasks = async (request, response) => {
+exports.listAllTasks = async (request, response, next) => {
 
     try {
 
-        const tasksList = await Task.findAll()
+        const filter = request.query
+
+        const owner = request.user.owner
+
+        const tasksList = await Task.findAll({where: filter, owner })
 
         return response.json(tasksList)
 
@@ -54,8 +58,9 @@ exports.listAllTasks = async (request, response) => {
 exports.taskDetails = async (request, response) => {
 
     const id = request.params.id;
+    const owner = request.user.owner
 
-    const taskDetailsById = await Task.findOne({ where: { id } })
+    const taskDetailsById = await Task.findOne({ where: { id, owner } })
 
     if(!taskDetailsById) {
         return response.json({message: 'Task não encontrada!'})
@@ -70,7 +75,9 @@ exports.updateTaskStatus = async (request, response) => {
 
     const taskData = request.body
 
-    const updateTaskStatusById = await Task.update(taskData, { where: { id } })
+    const owner = request.user.owner
+
+    const updateTaskStatusById = await Task.update(taskData, { where: { id, owner } })
 
     return response.json({ message: `Atualizando dados da tarefa ${id}` })
 }
@@ -79,7 +86,9 @@ exports.deleteTask = async (request, response) => {
 
     const id = request.params.id;
 
-    const deleteTaskById = await Task.destroy({ where: { id } })
+    const owner = request.user.owner
+
+    const deleteTaskById = await Task.destroy({ where: { id, owner } })
 
     return response.json({ message: `Excluindo tarefa ${id}` })
 }

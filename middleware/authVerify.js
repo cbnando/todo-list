@@ -1,7 +1,7 @@
 const { request } = require('express')
 const jwt = require('jsonwebtoken')
 
-module.exports = function (request, response) {
+module.exports = function (request, response, next) {
 
     const userToken = request.header('token')
 
